@@ -4,13 +4,17 @@
 	"description": "",
 	"scripts": {
 		"start": "babel-node index.js",
-		"dev": "nodemon index.js"
+		"dev": "nodemon --exec babel-node index.js"
 	},
 	"author": "LushetskiyVlad",
 	"license": "ISC",
 	"dependencies": {
+		"bcrypt": "^3.0.6",
 		"body-parser": "^1.19.0",
-		"express": "^4.16.4"
+		"express": "^4.16.4",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^5.5.9",
+		"morgan": "^1.9.1"
 	},
 	"devDependencies": {
 		"babel-cli": "^6.26.0",

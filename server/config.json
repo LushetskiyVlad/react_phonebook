@@ -1,0 +1,10 @@
+{
+	"apiPrefix": "http://localhost:3000",
+	"serverPort": "3000",
+	"db": {
+		"name": "phoneBook",
+		"host": "localhost",
+		"port": "27017"
+	},
+	"JWT_KEY": "secret"
+}
