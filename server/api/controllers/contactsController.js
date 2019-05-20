@@ -44,8 +44,10 @@ export const createContact = (req, res, next) => {
 		name: req.body.name,
 		phone: req.body.phone,
 		company: req.body.company,
-		email: req.body.email
+		email: req.body.email,
+		photo: req.file.path
 	});
+	
 	contact.save()
 		.then(result => {
 			console.log(result);
