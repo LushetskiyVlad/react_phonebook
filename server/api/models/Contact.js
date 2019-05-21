@@ -24,6 +24,11 @@ const contactSchema = new Schema({
 	},
 	photo: {
 		type: String
+	},
+	user: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "User",
+		required: true
 	}
 });
 

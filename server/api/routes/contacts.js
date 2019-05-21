@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/', contactsController.getAllContacts);
 router.post('/', tokenAuth, upload.single('photo'), contactsController.createContact);
 router.get('/:contactId', contactsController.getContactById);
-router.patch("/:contactId", tokenAuth, contactsController.updateContact);
+router.patch("/:contactId", tokenAuth, upload.single('photo'), contactsController.updateContact);
 router.delete("/:contactId", tokenAuth, contactsController.deleteContact);
 
 export default router;

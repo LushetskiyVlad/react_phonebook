@@ -1,19 +1,39 @@
 import mongoose from 'mongoose';
 import Contact from '../models/Contact';
 
+function escapeRegex(text) {
+	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
 export const getAllContacts = (req, res, next) => {
-	Contact.find()
-		.exec()
-		.then(docs => {
-			console.log(docs);
-			res.status(200).json(docs);
-		})
-		.catch(err => {
-			console.log(err);
-			res.status(500).json({
-				error: err
+	if (req.query.search) {
+		const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+
+		Contact.find({ name: regex })
+			.exec()
+			.then(docs => {
+				res.status(200).json(docs);
+			})
+			.catch(err => {
+				console.log(err);
+				res.status(500).json({
+					error: err
+				});
 			});
-		});
+	}
+	else {
+		Contact.find({})
+			.exec()
+			.then(docs => {
+				res.status(200).json(docs);
+			})
+			.catch(err => {
+				console.log(err);
+				res.status(500).json({
+					error: err
+				});
+			});
+	}
 };
 
 export const getContactById = (req, res, next) => {
@@ -21,7 +41,7 @@ export const getContactById = (req, res, next) => {
 	Contact.findById(id)
 		.exec()
 		.then(doc => {
-			console.log("From Database", doc);
+			// console.log("From Database", doc);
 			if (doc) {
 				res.status(200).json(doc);
 			} else {
@@ -39,18 +59,21 @@ export const getContactById = (req, res, next) => {
 };
 
 export const createContact = (req, res, next) => {
+	const photo = req.file ? req.file : "";
+
 	const contact = new Contact({
 		_id: new mongoose.Types.ObjectId,
 		name: req.body.name,
 		phone: req.body.phone,
 		company: req.body.company,
 		email: req.body.email,
-		photo: req.file.path
+		photo: photo,
+		user: req.body.userId
 	});
-	
+
 	contact.save()
 		.then(result => {
-			console.log(result);
+			// console.log(result);
 			res.status(201).json({
 				message: "Handling POST request to contact",
 				createdContact: result
@@ -71,6 +94,7 @@ export const updateContact = (req, res) => {
 	for (let [key, value] of Object.entries(req.body)) {
 		props[key] = value;
 	}
+	props.photo = req.file ? req.file.path : "";
 
 	Contact.update({ _id: id }, { $set: props })
 		.exec()

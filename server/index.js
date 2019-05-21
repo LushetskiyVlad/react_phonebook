@@ -9,7 +9,7 @@ import userRouter from './api/routes/user';
 
 const app = express();
 
-mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.name}`);
+mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.name}`, { useNewUrlParser: true });
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
