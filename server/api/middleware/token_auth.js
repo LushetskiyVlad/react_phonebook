@@ -1,15 +1,33 @@
 import jwt from 'jsonwebtoken';
 import config from '../../config.json';
+import User from '../models/User';
 
 export default (req, res, next) => {
-	try {
-		const token = req.headers.authorization;
-		const decoded = jwt.verify(token, config.JWT_KEY);
-		req.userData = decoded;
-		next();
-	} catch (error) {
-		return res.status(401).json({
-			message: error.message
+	const authHeader = req.headers.authorization;
+	let token;
+
+	if (authHeader) {
+		token = authHeader.split(' ')[1];
+	}
+
+	if (token) {
+		jwt.verify(token, config.JWT_KEY, (err, decoded) => {
+			if (err) {
+				res.status(401).json({ error: "Failed to authenticate" });
+			} else {
+				User.findById(decoded.userId).exec()
+					.then(user => {
+						if (!user) {
+							res.status(404).json({ error: "No such user" })
+						}
+						req.userData = user;
+						next();
+					});
+			}
+		});
+	} else {
+		res.status(403).json({
+			error: "No token provided"
 		});
 	}
 };

@@ -6,9 +6,9 @@ import tokenAuth from '../middleware/token_auth';
 
 const router = express.Router();
 
-router.get('/', contactsController.getAllContacts);
+router.get('/', tokenAuth, contactsController.getAllContacts);
 router.post('/', tokenAuth, upload.single('photo'), contactsController.createContact);
-router.get('/:contactId', contactsController.getContactById);
+router.get('/:contactId', tokenAuth, contactsController.getContactById);
 router.patch("/:contactId", tokenAuth, upload.single('photo'), contactsController.updateContact);
 router.delete("/:contactId", tokenAuth, contactsController.deleteContact);
 

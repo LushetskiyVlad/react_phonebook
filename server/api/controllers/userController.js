@@ -2,10 +2,18 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
+import signupValidation from '../validations/signup';
 import config from '../../config.json';
 import User from '../models/User';
 
 export const signup = (req, res) => {
+
+	let { errors, isValid } = signupValidation(req.body);
+
+	if (!isValid) {
+		return res.status(400).json(errors);
+	}
+
 	User.find({ email: req.body.email })
 		.exec()
 		.then(user => {
@@ -17,7 +25,7 @@ export const signup = (req, res) => {
 				bcrypt.hash(req.body.password, 10, (err, hash) => {
 					if (err) {
 						return res.status(500).json({
-							error: err
+							errors: err
 						});
 					} else {
 						const user = new User({
@@ -34,7 +42,7 @@ export const signup = (req, res) => {
 								});
 							}).catch(err => {
 								res.status(500).json({
-									error: err
+									errors: err
 								});
 							});
 					}
@@ -51,7 +59,7 @@ export const signin = (req, res, next) => {
 				bcrypt.compare(req.body.password, user.password, (err, result) => {
 					if (err) {
 						return res.status(401).json({
-							message: "Auth failed"
+							errors: { form: "Invalid password or email address. Please try again." }
 						});
 					}
 					if (result) {
@@ -65,20 +73,20 @@ export const signin = (req, res, next) => {
 						});
 					}
 					res.status(401).json({
-						message: "Auth failed"
+						errors: { form: "Invalid password or email address. Please try again." }
 					});
 				});
 			}
 			else {
 				return res.status(401).json({
-					message: "Auth failed"
+					errors: { form: "No such user exists!" }
 				});
 			}
 		})
 		.catch(err => {
 			console.log(err);
 			res.status(500).json({
-				error: err
+				errors: err
 			});
 		});
 };

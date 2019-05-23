@@ -9,7 +9,7 @@ export const getAllContacts = (req, res, next) => {
 	if (req.query.search) {
 		const regex = new RegExp(escapeRegex(req.query.search), 'gi');
 
-		Contact.find({ name: regex })
+		Contact.find({ user: req.userData._id }).find({ name: regex })
 			.exec()
 			.then(docs => {
 				res.status(200).json(docs);
@@ -22,7 +22,7 @@ export const getAllContacts = (req, res, next) => {
 			});
 	}
 	else {
-		Contact.find({})
+		Contact.find({ user: req.userData._id })
 			.exec()
 			.then(docs => {
 				res.status(200).json(docs);
@@ -41,7 +41,6 @@ export const getContactById = (req, res, next) => {
 	Contact.findById(id)
 		.exec()
 		.then(doc => {
-			// console.log("From Database", doc);
 			if (doc) {
 				res.status(200).json(doc);
 			} else {
@@ -73,7 +72,6 @@ export const createContact = (req, res, next) => {
 
 	contact.save()
 		.then(result => {
-			// console.log(result);
 			res.status(201).json({
 				message: "Handling POST request to contact",
 				createdContact: result
