@@ -1,16 +1,23 @@
 import axios from 'axios';
 import { apiPrefix } from '../config.json';
-import * as propTypes from './actionTypes';
+import * as actionTypes from './actionTypes';
 
 export function setContactsStart() {
 	return {
-		type: propTypes.SET_CONTACTS_START,
+		type: actionTypes.SET_CONTACTS_START,
 	};
 }
 export function setContactsSuccess(contacts) {
 	return {
-		type: propTypes.SET_CONTACTS,
+		type: actionTypes.SET_CONTACTS_SUCCESS,
 		contacts
+	};
+}
+
+export function deleteContactFromState(contactId) {
+	return {
+		type: actionTypes.DELETE_CONTACT,
+		id: contactId
 	};
 }
 
@@ -28,5 +35,14 @@ export function getContacts(search) {
 export function createContact(contactData) {
 	return dispatch => {
 		return axios.post(`${apiPrefix}/contacts`, contactData);
+	}
+}
+
+export function deleteContact(contactId) {
+	return dispatch => {
+		return axios.delete(`${apiPrefix}/contacts/${contactId}`)
+			.then(res => {
+				dispatch(deleteContactFromState(contactId));
+			});
 	}
 }

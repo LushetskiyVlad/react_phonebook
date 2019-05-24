@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Card, Image, Button } from 'semantic-ui-react';
+import { deleteContact } from '../../actions/contactsActions';
 
 class Contact extends Component {
+
+	onDeleteClick(e) {
+		e.preventDefault();
+		this.props.deleteContact(this.props.contact._id);
+	}
+
 	render() {
 		const contact = this.props.contact;
 		return (
-			<Card fluid style={{height: "100%"}}>
+			<Card fluid style={{ height: "100%" }}>
 				<Image src={contact.photo} wrapped ui={false} rounded />
 				<Card.Content>
 					<Card.Header>{contact.name}</Card.Header>
@@ -20,12 +29,8 @@ class Contact extends Component {
 				</Card.Content>
 				<Card.Content extra>
 					<div className='ui two buttons'>
-						<Button basic color='green'>
-							Edit
-						</Button>
-						<Button basic color='red'>
-							Delete
-						</Button>
+						<Button basic color='green'>Edit</Button>
+						<Button onClick={this.onDeleteClick.bind(this)} basic color='red'>Delete</Button>
 					</div>
 				</Card.Content>
 			</Card >
@@ -33,4 +38,8 @@ class Contact extends Component {
 	}
 }
 
-export default Contact;
+Contact.propTypes = {
+	deleteContact: PropTypes.func
+}
+
+export default connect(null, { deleteContact })(Contact);

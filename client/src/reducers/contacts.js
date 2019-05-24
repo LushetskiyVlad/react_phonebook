@@ -1,4 +1,4 @@
-import * as propTypes from '../actions/actionTypes';
+import * as actionTypes from '../actions/actionTypes';
 
 const initialState = ({
 	loading: false,
@@ -7,15 +7,20 @@ const initialState = ({
 
 export default (state = initialState, action) => {
 	switch (action.type) {
-		case propTypes.SET_CONTACTS:
+		case actionTypes.SET_CONTACTS_SUCCESS:
 			return {
 				loading: false,
 				contacts: action.contacts
 			}
-		case propTypes.SET_CONTACTS_START:
+		case actionTypes.SET_CONTACTS_START:
 			return {
 				...state,
 				loading: true
+			}
+		case actionTypes.DELETE_CONTACT:
+			return {
+				...state,
+				contacts: state.contacts.filter(c => c._id !== action.id)
 			}
 		default:
 			return state;
