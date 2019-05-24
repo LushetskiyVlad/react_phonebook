@@ -12,11 +12,13 @@ class Header extends Component {
 	}
 
 	render() {
-		console.dir(this.props);
-		const { isAuthenticated } = this.props.auth;
+		const { isAuthenticated, user } = this.props.auth;
 
 		const userLinks = (
 			<Menu.Menu position='right'>
+				<Menu.Item>
+					{user && user.email}
+				</Menu.Item>
 				<Menu.Item>
 					<a href="#" onClick={this.logout.bind(this)}>Logout</a>
 				</Menu.Item>
@@ -37,7 +39,7 @@ class Header extends Component {
 		);
 
 		return (
-			<Menu size='tiny'>
+			<Menu size='large'>
 				<Menu.Item>
 					<Link to="/">Home</Link>
 				</Menu.Item>

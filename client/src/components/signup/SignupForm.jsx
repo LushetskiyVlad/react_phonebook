@@ -14,8 +14,10 @@ class SignupForm extends Component {
 			password: '',
 			passwordConfirm: '',
 			errors: {},
+			message: '',
 			isLoading: false,
-			isValid: false
+			isValid: false,
+			signedUp: false
 		};
 
 		this.onChange = this.onChange.bind(this);
@@ -43,7 +45,14 @@ class SignupForm extends Component {
 			this.setState({ errors: {}, isLoading: true });
 
 			this.props.userSignupRequest(this.state)
-				.then(() => {},
+				.then((res) => {
+					console.log(res);
+					this.setState({
+						isLoading: false,
+						message: res.data.message,
+						signedUp: true
+					})
+				},
 					(err) => this.setState(
 						{
 							errors: err.response ?
@@ -51,14 +60,14 @@ class SignupForm extends Component {
 							isLoading: false
 						}));
 		}
-
-
 	}
 
 	render() {
 		const { errors } = this.state;
 		return (
 			<Form error onSubmit={this.onSubmit}>
+				<Message success visible={this.state.signedUp} content={this.state.message} />
+				<Message error content={errors.message} />
 				<Form.Field>
 					<label>First Name</label>
 					<input

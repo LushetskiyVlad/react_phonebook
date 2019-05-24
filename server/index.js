@@ -31,6 +31,8 @@ app.use((req, res, next) => {
 app.use('/contacts', contactsRouter);
 app.use('/user', userRouter);
 
+app.use(express.static('public'));
+
 app.use((req, res, next) => {
 	const error = new Error('Not found');
 	error.status = 404;

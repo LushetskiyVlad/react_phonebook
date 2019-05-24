@@ -19,9 +19,10 @@ export default (req, res, next) => {
 					.then(user => {
 						if (!user) {
 							res.status(404).json({ error: "No such user" })
+						} else {
+							req.userData = user;
+							next();
 						}
-						req.userData = user;
-						next();
 					});
 			}
 		});

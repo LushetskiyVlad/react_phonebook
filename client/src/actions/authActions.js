@@ -2,8 +2,8 @@ import axios from 'axios';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import jwtDecode from 'jwt-decode';
 import { apiPrefix } from '../config.json';
+import { SET_CURRENT_USER } from './actionTypes';
 
-export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 
 export function setCurrentUser(user) {
 	return {

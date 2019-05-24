@@ -65,7 +65,7 @@ class LoginForm extends Component {
 				<Form.Field>
 					<label>Password</label>
 					<input
-						type="text"
+						type="password"
 						name="password"
 						onChange={this.onChange}
 						value={this.state.password}

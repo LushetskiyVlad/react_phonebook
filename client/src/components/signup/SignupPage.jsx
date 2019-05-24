@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import SignupForm from "./SignupForm";
 import { userSignupRequest } from '../../actions/signupActions';
-import { Container, Grid, GridColumn } from 'semantic-ui-react'
+import { Container, Grid, GridColumn, Header } from 'semantic-ui-react'
 
 
 class SignupPage extends Component {
@@ -13,6 +13,7 @@ class SignupPage extends Component {
 			<Container >
 				<Grid centered>
 					<GridColumn width="6">
+						<Header as="h1" textAlign="center">Sign Up</Header>
 						<SignupForm userSignupRequest={userSignupRequest} />
 					</GridColumn>
 				</Grid>

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Contact from '../models/Contact';
+import {apiPrefix} from '../../config.json';
 
 function escapeRegex(text) {
 	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -58,7 +59,7 @@ export const getContactById = (req, res, next) => {
 };
 
 export const createContact = (req, res, next) => {
-	const photo = req.file ? req.file : "";
+	const photo = req.file ? `${apiPrefix}/uploads/${req.file.filename}` : "";
 
 	const contact = new Contact({
 		_id: new mongoose.Types.ObjectId,
@@ -67,7 +68,7 @@ export const createContact = (req, res, next) => {
 		company: req.body.company,
 		email: req.body.email,
 		photo: photo,
-		user: req.body.userId
+		user: req.userData._id
 	});
 
 	contact.save()

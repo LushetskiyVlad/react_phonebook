@@ -19,13 +19,13 @@ export const signup = (req, res) => {
 		.then(user => {
 			if (user.length >= 1) {
 				return res.status(409).json({
-					message: "Mail exists"
+					 message: "Mail exists" 
 				});
 			} else {
 				bcrypt.hash(req.body.password, 10, (err, hash) => {
 					if (err) {
 						return res.status(500).json({
-							errors: err
+							error: err
 						});
 					} else {
 						const user = new User({
@@ -38,11 +38,11 @@ export const signup = (req, res) => {
 						user.save()
 							.then(result => {
 								res.status(201).json({
-									message: "User created"
+									message: "You signed up successfully. Welcome!"
 								});
 							}).catch(err => {
 								res.status(500).json({
-									errors: err
+									error: err
 								});
 							});
 					}
