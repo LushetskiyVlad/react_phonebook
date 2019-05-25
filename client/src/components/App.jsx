@@ -5,6 +5,7 @@ import Header from "./Header";
 import Home from "./Home";
 import LoginPage from "./login/LoginPage";
 import SignupPage from "./signup/SignupPage";
+import ContactForm from "./contacts/ContactForm";
 import NotFound from "./NotFound";
 import { Container } from 'semantic-ui-react'
 
@@ -18,6 +19,8 @@ class App extends Component {
 						<Route exact path="/" component={Home} />
 						<Route path="/login" component={LoginPage} />
 						<Route path="/signup" component={SignupPage} />
+						<Route path="/new-contact" component={ContactForm} />
+						<Route path="/edit-contact/:contactId" component={ContactForm} />
 						<Route component={NotFound} />
 					</Switch>
 				</Container>

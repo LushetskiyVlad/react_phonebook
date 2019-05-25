@@ -2,15 +2,23 @@ import axios from 'axios';
 import { apiPrefix } from '../config.json';
 import * as actionTypes from './actionTypes';
 
-export function setContactsStart() {
+export function getContactsStart() {
 	return {
-		type: actionTypes.SET_CONTACTS_START,
+		type: actionTypes.GET_CONTACTS_START,
 	};
 }
-export function setContactsSuccess(contacts) {
+
+export function getContactsSuccess(contacts) {
 	return {
-		type: actionTypes.SET_CONTACTS_SUCCESS,
+		type: actionTypes.GET_CONTACTS_SUCCESS,
 		contacts
+	};
+}
+
+export function createNewContact(contact) {
+	return {
+		type: actionTypes.CREATE_NEW_CONTACT,
+		contact
 	};
 }
 
@@ -23,18 +31,30 @@ export function deleteContactFromState(contactId) {
 
 export function getContacts(search) {
 	return dispatch => {
-		dispatch(setContactsStart());
+		dispatch(getContactsStart());
 		return axios.get(`${apiPrefix}/contacts`, {
 			params: { search }
 		}).then(response => {
-			dispatch(setContactsSuccess(response.data));
+			dispatch(getContactsSuccess(response.data));
 		});
+	}
+}
+
+export function getContactById(contactId) {
+	return dispatch => {
+		return axios.get(`${apiPrefix}/contacts/${contactId}`);
 	}
 }
 
 export function createContact(contactData) {
 	return dispatch => {
 		return axios.post(`${apiPrefix}/contacts`, contactData);
+	}
+}
+
+export function updateContact(contactId, contactData) {
+	return dispatch => {
+		return axios.patch(`${apiPrefix}/contacts/${contactId}`, contactData);
 	}
 }
 

@@ -5,8 +5,12 @@ import { connect } from 'react-redux';
 import { login } from '../../actions/authActions';
 import { Button, Form, Message, Loader } from 'semantic-ui-react'
 import validateInput from '../../validations/login';
+import { Redirect } from 'react-router-dom';
 
 class LoginForm extends Component {
+
+	_isMounted = false;
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -33,8 +37,7 @@ class LoginForm extends Component {
 		e.preventDefault();
 		if (this.isValid()) {
 			this.setState({ errors: {}, isLoading: true });
-			this.props.login(this.state).then(
-				(res) => { this.setState({isLoading:false}) },
+			this.props.login(this.state).catch(
 				(err) => this.setState({
 					errors: err.response ?
 						err.response.data.errors : {}, isLoading: false
@@ -49,6 +52,9 @@ class LoginForm extends Component {
 
 	render() {
 		const { errors } = this.state;
+		if (this.props.auth.isAuthenticated===true) {
+			return <Redirect to="/" />
+		}
 		return (
 			<Form error onSubmit={this.onSubmit}>
 				<Message error content={errors.form} />
@@ -80,7 +86,14 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
+	auth: PropTypes.object.isRequired,
 	login: PropTypes.func.isRequired
 }
 
-export default connect(null, { login })(LoginForm);
+function mapStateToProps(state) {
+	return {
+		auth: state.auth
+	};
+}
+
+export default connect(mapStateToProps, { login })(LoginForm);

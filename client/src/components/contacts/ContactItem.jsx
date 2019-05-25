@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from "react-router-dom";
 import { Card, Image, Button } from 'semantic-ui-react';
 import { deleteContact } from '../../actions/contactsActions';
 
-class Contact extends Component {
+class ContactItem extends Component {
+	constructor(props) {
+		super(props);
+		this.redirect = this.redirect.bind(this);
+	}
+
+	redirect() {
+		this.props.history.push({
+
+		});
+	}
 
 	onDeleteClick(e) {
 		e.preventDefault();
@@ -29,7 +41,9 @@ class Contact extends Component {
 				</Card.Content>
 				<Card.Content extra>
 					<div className='ui two buttons'>
-						<Button basic color='green'>Edit</Button>
+						<Button basic color='green'>
+							<Link to={`/edit-contact/${contact._id}`}>Edit</Link>
+						</Button>
 						<Button onClick={this.onDeleteClick.bind(this)} basic color='red'>Delete</Button>
 					</div>
 				</Card.Content>
@@ -38,8 +52,8 @@ class Contact extends Component {
 	}
 }
 
-Contact.propTypes = {
+ContactItem.propTypes = {
 	deleteContact: PropTypes.func
 }
 
-export default connect(null, { deleteContact })(Contact);
+export default connect(null, { deleteContact })(withRouter(ContactItem));

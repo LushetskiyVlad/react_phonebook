@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Contact from '../models/Contact';
-import {apiPrefix} from '../../config.json';
+import { apiPrefix } from '../../config.json';
 
 function escapeRegex(text) {
 	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -59,6 +59,7 @@ export const getContactById = (req, res, next) => {
 };
 
 export const createContact = (req, res, next) => {
+	console.log(req.body);
 	const photo = req.file ? `${apiPrefix}/uploads/${req.file.filename}` : "";
 
 	const contact = new Contact({
@@ -74,7 +75,7 @@ export const createContact = (req, res, next) => {
 	contact.save()
 		.then(result => {
 			res.status(201).json({
-				message: "Handling POST request to contact",
+				message: "contact added successfully",
 				createdContact: result
 			});
 		})
@@ -93,16 +94,16 @@ export const updateContact = (req, res) => {
 	for (let [key, value] of Object.entries(req.body)) {
 		props[key] = value;
 	}
-	props.photo = req.file ? req.file.path : "";
+	if(req.file) {
+		props.photo = `${apiPrefix}/uploads/${req.file.filename}`;
+	}
 
 	Contact.update({ _id: id }, { $set: props })
 		.exec()
 		.then(result => {
-			console.log(result);
 			res.status(200).json(result);
 		})
 		.catch(err => {
-			console.log(err);
 			res.status(500).json({
 				error: err
 			});
@@ -117,7 +118,6 @@ export const deleteContact = (req, res) => {
 			res.status(200).json(result);
 		})
 		.catch(err => {
-			console.log(err);
 			res.status(500).json({
 				error: err
 			});

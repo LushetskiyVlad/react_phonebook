@@ -20,7 +20,7 @@ class Header extends Component {
 					{user && user.email}
 				</Menu.Item>
 				<Menu.Item>
-					<a href="#" onClick={this.logout.bind(this)}>Logout</a>
+					<Button onClick={this.logout.bind(this)}>Logout</Button>
 				</Menu.Item>
 			</Menu.Menu>
 		);
