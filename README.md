@@ -1,7 +1,9 @@
 # Phonebook REST API Documentation
 
+**[API](server/API.md)**
+
 ## MongoDB
-Download and install MongoDB from <https://www.mongodb.com/download-center>.
+Download and install MongoDB from <https://www.mongodb.com/download-center>.<br/>
 Then go to the folder with MongoDB installed "cd &lt;install directory>\bin" and run MongoDB server "mongod"
 
 ## Usage
